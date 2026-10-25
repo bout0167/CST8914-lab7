@@ -36,8 +36,9 @@
           <label for="name">Full name <span class="required">*</span></label><input id="name" name="name" type="text" required/>
         </div>
         <div class="control">
-          <label for="biography">Biography</label><textarea id="biography" name="biography" type="text"></textarea>
-          <span>Include examples on your skills in JavaScript.</span>
+          <!-- added aria-describedby to the textarea for accessibility -->
+          <label for="biography">Biography</label><textarea id="biography" name="biography" type="text" aria-describedby="biography_description"></textarea>
+          <span id="biography_description">Include examples on your skills in JavaScript.</span>
         </div>
 
         <!-- grouped the gender options into a fieldset instead of a plain div -->
