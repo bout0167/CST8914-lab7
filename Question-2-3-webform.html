@@ -37,23 +37,26 @@
         </div>
         <div class="control">
           <!-- added aria-describedby to the textarea for accessibility -->
-          <label for="biography">Biography</label><textarea id="biography" name="biography" type="text" aria-describedby="biography_description"></textarea>
+          <!-- added the 'required' indicator and attribute -->
+          <label for="biography">Biography <span class="required">*</span> </label><textarea id="biography" name="biography" type="text" aria-describedby="biography_description" required></textarea>
           <span id="biography_description">Include examples on your skills in JavaScript.</span>
         </div>
 
         <!-- grouped the gender options into a fieldset instead of a plain div -->
+        <!-- added the 'required' indicator and attribute -->
         <fieldset>
-          <legend>Gender</legend>
+          <legend>Gender<span class="required">*</span></legend>
           <div class="control">
-            <input id="gender_male" name="gender" type="radio" value="male" /><label for="gender_male">Male</label>
+            <input id="gender_male" name="gender" type="radio" value="male" required/><label for="gender_male">Male</label>
           </div>
           <div class="control">
-            <input id="gender_female" name="gender" type="radio" value="female" /><label for="gender_female">Female</label>
+            <input id="gender_female" name="gender" type="radio" value="female" required/><label for="gender_female">Female</label>
           </div>
         </fieldset>
         
         <div class="control">
-          <input id="accept_agbs" name="accept_agbs" type="checkbox" value="1" /><label for="accept_agbs">I accept the terms and conditions</label>
+          <!-- added the 'required' indicator and attribute -->
+          <input id="accept_agbs" name="accept_agbs" type="checkbox" value="1" required/><label for="accept_agbs">I accept the terms and conditions<span class="required">*</span></label>
         </div>
         <div class="control">
           <input name="validate" type="hidden" value="1" /><input type="submit" value="Register" />
@@ -84,7 +87,8 @@
       
           if ((value = $.urlParam(input)) === null) {
             if ($('fieldset.errors').length === 0) {
-              $('form').prepend('<fieldset class="errors"><legend>Errors</legend><ul></ul></fieldset>');
+              // added a fieldset with a legend and an unordered list to contain the error messages, and added tabindex="-1" to the fieldset so that it can receive focus when the user clicks on an error message
+              $('form').prepend('<fieldset id="error-summary" class="errors" tabindex="-1"><legend>Errors</legend><ul></ul></fieldset>');
             }
       
             $referencedElement = null;
@@ -100,8 +104,8 @@
               $referencedElement = $input;
             }
       // R.G. hint: fix next line ;)
-            $error = $('<a>' + message + '</a>');
-            $error.click(function (e) {
+      // linked the error message to the input field that has the error, so that screen readers can read the error message when the user focuses on the input field
+              $error = $('<a href="#' + $referencedElement.attr('id') + '" class="error">' + message + '</a>');            $error.click(function (e) {
               // If we rely on the link's href pointing to the input's ID, it doesn't trigger forms mode in screen readers
               $referencedElement.focus();
               return e.preventDefault();
@@ -111,7 +115,8 @@
       
             if ($(':not(form):focus').length === 0) {
               // See https://stackoverflow.com/questions/46134247/jquery-setting-focus-doesnt-work-in-ie11/
-            
+              $('#error-summary').focus();
+              // to focus the error summary fieldset when the user clicks on an error message, so that screen readers can read the error message
             }
           } else {
             if ($input.is(':checkbox')) {
